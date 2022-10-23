@@ -1,0 +1,21 @@
+server:
+  port: 9012
+spring:
+  application:
+    name: imall-consumer-order
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+eureka:
+  client:
+    service-url:
+      #单机
+      #      defaultZone: http://localhost:7001/eureka/
+      #集群
+      defaultZone: http://binbini.eureka7001.com:7001/eureka/,http://binbini.eureka7002.com:7002/eureka/,http://binbini.eureka7003.com:7003/eureka/
+    register-with-eureka: false # 不向Eureka注册自己
+ribbon:
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
