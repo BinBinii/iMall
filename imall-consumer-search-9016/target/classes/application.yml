@@ -14,7 +14,7 @@ eureka:
       #单机
       #      defaultZone: http://localhost:7001/eureka/
       #集群
-      defaultZone: http://binbini.eureka7001.com:7001/eureka/,http://binbini.eureka7002.com:7002/eureka/,http://binbini.eureka7003.com:7003/eureka/
+      defaultZone: http://127.0.0.1:7001/eureka/,http://127.0.0.1:7002/eureka/,http://127.0.0.1:7003/eureka/
     register-with-eureka: false # 不向Eureka注册自己
 ribbon:
   ReadTimeout: 30000

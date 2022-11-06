@@ -9,8 +9,6 @@ import com.google.gson.Gson;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.action.delete.DeleteRequest;
-import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.support.master.AcknowledgedResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -50,7 +48,6 @@ public class SearchItemServiceImpl implements SearchItemService {
 
     @Override
     public boolean importAllItems() throws IOException {
-//        deleteDocument();
         // 构建批量插入请求
         BulkRequest request = new BulkRequest();
         // 设置超时时间

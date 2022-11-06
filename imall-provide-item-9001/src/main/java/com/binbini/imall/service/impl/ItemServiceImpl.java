@@ -1,6 +1,7 @@
 package com.binbini.imall.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.binbini.imall.config.RabbitmqConfig;
 import com.binbini.imall.dto.ItemDto;
 import com.binbini.imall.exception.IMallException;
 import com.binbini.imall.mapper.TbItemCatMapper;
@@ -9,10 +10,13 @@ import com.binbini.imall.mapper.TbItemMapper;
 import com.binbini.imall.pojo.TbItem;
 import com.binbini.imall.pojo.TbItemCat;
 import com.binbini.imall.service.ItemService;
+import com.binbini.imall.utils.IdGen;
 import com.binbini.imall.utils.ObjectUtil;
 import com.binbini.imall.vo.DataTablesResult;
+import com.binbini.imall.vo.MessageVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +37,8 @@ public class ItemServiceImpl implements ItemService {
     private TbItemDescMapper tbItemDescMapper;
     @Autowired
     private TbItemCatMapper tbItemCatMapper;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Override
     public int createItem(ItemDto itemDto) {
@@ -42,7 +48,8 @@ public class ItemServiceImpl implements ItemService {
             itemDto.getImage().equals("") || itemDto.getCid().equals("")) {
             return 0;
         }
-        tbItem.setTitle(itemDto.getTitle())
+        tbItem.setId(Integer.parseInt(IdGen.uuid()))
+                .setTitle(itemDto.getTitle())
                 .setSell_point(itemDto.getSell_point())
                 .setVersion(itemDto.getVersion())
                 .setColor(itemDto.getColor())
@@ -58,6 +65,10 @@ public class ItemServiceImpl implements ItemService {
         if (tbItemMapper.insert(tbItem) != 1) {
             return -1;
         }
+        MessageVo<Integer> messageVo = new MessageVo<>();
+        messageVo.setTitle("add_item");
+        messageVo.setData(tbItem.getId());
+        rabbitTemplate.convertAndSend(RabbitmqConfig.EXCHANGE_TOPICS_INFORM, "inform.item", messageVo);
         return 1;
     }
 
