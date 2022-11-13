@@ -16,9 +16,11 @@ public interface CartService {
      * @param userId
      * @param itemId
      * @param num
+     * @param color
+     * @param version
      * @return
      */
-    boolean addCartItem(Integer userId, Integer itemId, Integer num);
+    boolean addCartItem(Integer userId, Integer itemId, Integer num, Integer color, Integer version);
 
     /**
      * 根据用户ID获取购物车
@@ -32,10 +34,12 @@ public interface CartService {
      * @param userId
      * @param itemId
      * @param num
+     * @param color
+     * @param version
      * @param checked
      * @return
      */
-    boolean updateCart(Integer userId, Integer itemId, Integer num, Boolean checked);
+    boolean updateCart(Integer userId, Integer itemId, Integer num, Integer color, Integer version, Boolean checked);
 
     /**
      * 全选/取消全选

@@ -19,7 +19,9 @@ public interface CartClientService {
     @PostMapping("/cart/add")
     public boolean addCartItem(@RequestParam("userId") Integer userId,
                                @RequestParam("itemId") Integer itemId,
-                               @RequestParam("num") Integer num);
+                               @RequestParam("num") Integer num,
+                               @RequestParam("color") Integer color,
+                               @RequestParam("version") Integer version);
 
     @GetMapping("/cart/list")
     public CartVo getCartList(@RequestParam("userId") Integer userId);
@@ -28,6 +30,8 @@ public interface CartClientService {
     public boolean updateCart(@RequestParam("userId") Integer userId,
                               @RequestParam("itemId") Integer itemId,
                               @RequestParam("num") Integer num,
+                              @RequestParam("color") Integer color,
+                              @RequestParam("version") Integer version,
                               @RequestParam("checked") Boolean checked);
 
     @PostMapping("/cart/check/all")

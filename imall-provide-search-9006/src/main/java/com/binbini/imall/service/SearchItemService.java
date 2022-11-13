@@ -19,6 +19,12 @@ public interface SearchItemService {
     boolean importAllItems() throws IOException;
 
     /**
+     * 删除索引
+     * @return
+     */
+    boolean deleteAllItems() throws IOException;
+
+    /**
      * 获取ES基本信息
      * @return
      */

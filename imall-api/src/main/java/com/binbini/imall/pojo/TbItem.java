@@ -43,6 +43,8 @@ public class TbItem implements Serializable {
 
     private String image;                       // 商品图片
 
+    private String video;                       // 商品视频
+
     private Integer cid;                        // 所属分类
 
     private String cid_content;                 // 所属分类

@@ -9,13 +9,15 @@
         <outputRelativeToContentRoot value="true" />
         <module name="imall-provide-item-9001" />
         <module name="imall-provide-cart-9003" />
+        <module name="imall-provide-comment-9005" />
         <module name="imall-consumer-panel-9014" />
         <module name="imall-provide-order-9002" />
-        <module name="imall-consumer-search-9016" />
         <module name="imall-consumer-item-9011" />
         <module name="imall-api" />
-        <module name="imall-consumer-order-9012" />
         <module name="imall-consumer-cart-9013" />
+        <module name="imall-consumer-comment-9015" />
+        <module name="imall-consumer-search-9016" />
+        <module name="imall-consumer-order-9012" />
         <module name="imall-provide-search-9006" />
         <module name="imall-provide-panel-9004" />
       </profile>

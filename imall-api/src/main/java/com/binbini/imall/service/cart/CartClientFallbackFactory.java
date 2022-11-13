@@ -13,7 +13,7 @@ public class CartClientFallbackFactory implements FallbackFactory {
     public CartClientService create(Throwable throwable) {
         return new CartClientService() {
             @Override
-            public boolean addCartItem(Integer userId, Integer itemId, Integer num) {
+            public boolean addCartItem(Integer userId, Integer itemId, Integer num, Integer color, Integer version) {
                 return false;
             }
 
@@ -25,7 +25,7 @@ public class CartClientFallbackFactory implements FallbackFactory {
             }
 
             @Override
-            public boolean updateCart(Integer userId, Integer itemId, Integer num, Boolean checked) {
+            public boolean updateCart(Integer userId, Integer itemId, Integer num, Integer color, Integer version, Boolean checked) {
                 return false;
             }
 

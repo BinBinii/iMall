@@ -33,9 +33,9 @@ eureka:
   client:
     service-url:
       #单机
-#      defaultZone: http://localhost:7001/eureka/
+      defaultZone: http://120.78.157.152:7001/eureka/
       #集群
-      defaultZone: http://studio.eureka7001.com:7001/eureka/,http://studio.eureka7002.com:7002/eureka/,http://studio.eureka7003.com:7003/eureka/
+#      defaultZone: http://studio.eureka7001.com:7001/eureka/,http://studio.eureka7002.com:7002/eureka/,http://studio.eureka7003.com:7003/eureka/
   instance:
     instance-id: imall-provider-cart-9003
 info:

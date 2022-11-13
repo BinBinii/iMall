@@ -48,6 +48,7 @@ public class SearchItemServiceImpl implements SearchItemService {
 
     @Override
     public boolean importAllItems() throws IOException {
+
         // 构建批量插入请求
         BulkRequest request = new BulkRequest();
         // 设置超时时间
@@ -63,6 +64,13 @@ public class SearchItemServiceImpl implements SearchItemService {
         }
         BulkResponse response = client.bulk(request, RequestOptions.DEFAULT);
         return response.hasFailures();
+    }
+
+    @Override
+    public boolean deleteAllItems() throws IOException {
+        DeleteIndexRequest request = new DeleteIndexRequest(ITEM_INDEX);
+        AcknowledgedResponse response = client.indices().delete(request, RequestOptions.DEFAULT);
+        return response.isAcknowledged();
     }
 
     @Override

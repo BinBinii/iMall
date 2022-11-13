@@ -34,8 +34,12 @@ public class BannerSearchItemServiceImpl implements BannerSearchItemService {
         queryWrapper.like("search_id", tbBannerSearchItem.getSearch_id());
         queryWrapper.orderByAsc("sort");
         List<TbBannerSearchItem> inDBList = tbBannerSearchItemMapper.selectList(queryWrapper);
-        TbBannerSearchItem last = inDBList.get(inDBList.size() - 1);
-        tbBannerSearchItem.setSort(last.getSort() + 1);
+        if (inDBList.size() == 0) {
+            tbBannerSearchItem.setSort(1);
+        } else {
+            TbBannerSearchItem last = inDBList.get(inDBList.size() - 1);
+            tbBannerSearchItem.setSort(last.getSort() + 1);
+        }
         if (tbBannerSearchItem.getSearch_id().equals("") || tbBannerSearchItem.getProduct_id().equals("")) {
             return 0;
         }

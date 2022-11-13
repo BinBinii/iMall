@@ -11,7 +11,6 @@ import com.binbini.imall.pojo.TbItem;
 import com.binbini.imall.pojo.TbItemCat;
 import com.binbini.imall.service.ItemService;
 import com.binbini.imall.utils.IdGen;
-import com.binbini.imall.utils.ObjectUtil;
 import com.binbini.imall.vo.DataTablesResult;
 import com.binbini.imall.vo.MessageVo;
 import com.github.pagehelper.PageHelper;
@@ -48,7 +47,7 @@ public class ItemServiceImpl implements ItemService {
             itemDto.getImage().equals("") || itemDto.getCid().equals("")) {
             return 0;
         }
-        tbItem.setId(Integer.parseInt(IdGen.uuid()))
+        tbItem.setId(IdGen.randomInteger())
                 .setTitle(itemDto.getTitle())
                 .setSell_point(itemDto.getSell_point())
                 .setVersion(itemDto.getVersion())
@@ -57,6 +56,7 @@ public class ItemServiceImpl implements ItemService {
                 .setNum(itemDto.getNum())
                 .setLimit_num(itemDto.getLimit_num())
                 .setImage(itemDto.getImage())
+                .setVideo(itemDto.getVideo())
                 .setCid(itemDto.getCid())
                 .setCid_content(findItemCatCidContentById(itemDto.getCid()))
                 .setStatus(1)
@@ -107,7 +107,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public boolean update(ItemDto itemDto) {
-        if (!ObjectUtil.checkObjAllFieldsIsNotNull(itemDto)) {
+        if (itemDto.getTitle().equals("") || itemDto.getSell_point().equals("") ||
+                itemDto.getPrice().equals("") || itemDto.getNum().equals("") || itemDto.getLimit_num().equals("") ||
+                itemDto.getImage().equals("") || itemDto.getCid().equals("")) {
             return false;
         }
         TbItem tbItem = tbItemMapper.selectById(itemDto.getId());
@@ -119,6 +121,7 @@ public class ItemServiceImpl implements ItemService {
                 .setNum(itemDto.getNum())
                 .setLimit_num(itemDto.getLimit_num())
                 .setImage(itemDto.getImage())
+                .setVideo(itemDto.getVideo())
                 .setCid(itemDto.getCid())
                 .setCid_content(findItemCatCidContentById(itemDto.getCid()))
                 .setStatus(itemDto.getStatus())

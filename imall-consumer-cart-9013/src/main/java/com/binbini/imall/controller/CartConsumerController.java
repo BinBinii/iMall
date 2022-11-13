@@ -22,8 +22,10 @@ public class CartConsumerController {
     @PostMapping("/s/add")
     public boolean addCartItem(@RequestParam("userId") Integer userId,
                                @RequestParam("itemId") Integer itemId,
-                               @RequestParam("num") Integer num) {
-        return cartClientService.addCartItem(userId, itemId, num);
+                               @RequestParam("num") Integer num,
+                               @RequestParam("color") Integer color,
+                               @RequestParam("version") Integer version) {
+        return cartClientService.addCartItem(userId, itemId, num, color, version);
     }
 
     @GetMapping("/s/list")
@@ -35,8 +37,10 @@ public class CartConsumerController {
     public boolean updateCart(@RequestParam("userId") Integer userId,
                               @RequestParam("itemId") Integer itemId,
                               @RequestParam("num") Integer num,
+                              @RequestParam("color") Integer color,
+                              @RequestParam("version") Integer version,
                               @RequestParam("checked") Boolean checked) {
-        return cartClientService.updateCart(userId, itemId, num, checked);
+        return cartClientService.updateCart(userId, itemId, num, color, version, checked);
     }
 
     @PostMapping("/s/check/all")

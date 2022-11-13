@@ -20,6 +20,10 @@ public class CartProduct implements Serializable {
 
     private Integer num;
 
+    private Integer version;
+
+    private Integer color;
+
     private boolean checked;
 
 }

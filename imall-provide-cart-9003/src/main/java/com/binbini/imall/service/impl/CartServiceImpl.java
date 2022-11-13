@@ -27,7 +27,7 @@ public class CartServiceImpl implements CartService {
     private String CART_PRE;
 
     @Override
-    public boolean addCartItem(Integer userId, Integer itemId, Integer num) {
+    public boolean addCartItem(Integer userId, Integer itemId, Integer num, Integer color, Integer version) {
         // 查询redis内是否存在
         boolean exists = redisUtil.hasKey(CART_PRE + ":" + userId + "");
         // 如存在则增加商品数量
@@ -36,9 +36,24 @@ public class CartServiceImpl implements CartService {
             if (json != null) {
                 CartVo cartVo = new Gson().fromJson(json, CartVo.class);
                 List<CartProduct> cartProductList = cartVo.getProductList();
+                boolean newCart = true;
                 for (CartProduct item:cartProductList) {
-
+                    if (item.getItem_id().equals(itemId) && item.getColor().equals(color) && item.getVersion().equals(version)) {
+                        item.setNum(item.getNum() + num);
+                        newCart = false;
+                        break;
+                    }
                 }
+                if (newCart) {
+                    CartProduct cartProduct = new CartProduct();
+                    cartProduct.setItem_id(itemId)
+                            .setNum(num)
+                            .setVersion(version)
+                            .setColor(color)
+                            .setChecked(true);
+                    cartProductList.add(cartProduct);
+                }
+                redisUtil.set(CART_PRE + ":" + userId + "", new Gson().toJson(cartVo));
                 return true;
             } else {
                 return false;
@@ -49,6 +64,8 @@ public class CartServiceImpl implements CartService {
         CartProduct cartProduct = new CartProduct();
         cartProduct.setItem_id(itemId)
                 .setNum(num)
+                .setVersion(version)
+                .setColor(color)
                 .setChecked(true);
         cartProductList.add(cartProduct);
         CartVo cartVo = new CartVo();
@@ -69,7 +86,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public boolean updateCart(Integer userId, Integer itemId, Integer num, Boolean checked) {
+    public boolean updateCart(Integer userId, Integer itemId, Integer num, Integer color, Integer version, Boolean checked) {
         String json = String.valueOf(redisUtil.get(CART_PRE + ":" + userId + ""));
         if (json == null) {
             return false;
@@ -77,9 +94,11 @@ public class CartServiceImpl implements CartService {
         CartVo cartVo = new Gson().fromJson(json, CartVo.class);
         List<CartProduct> cartProductList = cartVo.getProductList();
         for (CartProduct item:cartProductList) {
-            if (item.getItem_id().equals(itemId)) {
-                item.setNum(num);
-                item.setChecked(checked);
+            if (item.getItem_id().equals(itemId) && item.getColor().equals(color) && item.getVersion().equals(version)) {
+                item.setNum(num)
+                        .setColor(color)
+                        .setVersion(version)
+                        .setChecked(checked);
             }
         }
         redisUtil.set(CART_PRE + ":" + userId + "", new Gson().toJson(cartVo));
@@ -103,8 +122,19 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean delCartItem(Integer userId, Integer itemId) {
-        Long test = redisUtil.delete(CART_PRE + ":" + userId + "");
-        System.out.println(test);
+        String json = String.valueOf(redisUtil.get(CART_PRE + ":" + userId + ""));
+        if (json == null) {
+            return false;
+        }
+        CartVo cartVo = new Gson().fromJson(json, CartVo.class);
+        List<CartProduct> cartProductList = cartVo.getProductList();
+        for (CartProduct item:cartProductList) {
+            if (item.getItem_id().equals(itemId)) {
+                cartProductList.remove(item);
+                break;
+            }
+        }
+        redisUtil.set(CART_PRE + ":" + userId + "", new Gson().toJson(cartVo));
         return true;
     }
 }

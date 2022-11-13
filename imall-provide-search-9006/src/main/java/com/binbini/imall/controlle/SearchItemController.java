@@ -27,6 +27,9 @@ public class SearchItemController {
         return searchItemService.importAllItems();
     }
 
-
+    @PostMapping("del/all")
+    public boolean deleteAllItems() throws IOException {
+        return searchItemService.deleteAllItems();
+    }
 
 }

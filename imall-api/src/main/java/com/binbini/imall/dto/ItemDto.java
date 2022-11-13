@@ -33,6 +33,8 @@ public class ItemDto implements Serializable {
 
     private String image;              // 商品图片
 
+    private String video;              // 商品视频
+
     private Integer cid;               // 所属分类
 
     private Integer status;            // 商品状态 1正常 0下架
