@@ -26,6 +26,13 @@ public class CommentController {
         return commentService.createComment(commentDto);
     }
 
+    @PostMapping("create/message")
+    public int createCommentMessage(@RequestParam("parentId")Integer parentId,
+                                    @RequestParam("userId")Integer userId,
+                                    @RequestParam("content")String content) {
+        return commentService.createCommentMessage(parentId, userId, content);
+    }
+
     @GetMapping("get/page")
     public DataTablesResult findCommentSearchPage(@RequestParam("start") int start,
                                                   @RequestParam("length") int length,
@@ -42,8 +49,10 @@ public class CommentController {
     }
 
     @GetMapping("get/list")
-    public List<TbComment> findCommentByParentId(@RequestParam("parent_id") Integer parent_id) {
-        return commentService.findCommentByParentId(parent_id);
+    public DataTablesResult findCommentByParentId(@RequestParam("start") Integer start,
+                                                  @RequestParam("length") Integer length,
+                                                  @RequestParam("parent_id") Integer parent_id) {
+        return commentService.findCommentByParentId(start, length, parent_id);
     }
 
     @PostMapping("del")

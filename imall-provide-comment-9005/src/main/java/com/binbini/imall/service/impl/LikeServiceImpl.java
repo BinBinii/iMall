@@ -97,7 +97,8 @@ public class LikeServiceImpl implements LikeService {
         for (TbLikeContent item:list) {
             LikeCountVo likeCountVo = new LikeCountVo();
             likeCountVo.setCommentId(item.getComment_id())
-                            .setValue(item.getLike_number());
+                    .setValue(item.getLike_number())
+                    .setMessageValue(item.getComment_number());
             result.add(likeCountVo);
         }
         return result;

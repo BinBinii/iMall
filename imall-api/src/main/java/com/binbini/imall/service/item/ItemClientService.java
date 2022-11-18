@@ -26,6 +26,13 @@ public interface ItemClientService {
                                                @RequestParam("minDate") String minDate,
                                                @RequestParam("maxDate") String maxDate);
 
+    @GetMapping("/item/get/page/cid")
+    public DataTablesResult findItemSearchPageFromCid(@RequestParam("start") int start,
+                                                      @RequestParam("length") int length,
+                                                      @RequestParam("cid") int cid,
+                                                      @RequestParam("orderCol") String orderCol,
+                                                      @RequestParam("orderSort") String orderSort);
+
     @GetMapping("/item/get")
     public TbItem findItemById(@RequestParam("id") Integer id);
 

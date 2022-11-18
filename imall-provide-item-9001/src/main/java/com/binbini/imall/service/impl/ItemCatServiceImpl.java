@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.binbini.imall.dto.ItemCatDto;
 import com.binbini.imall.mapper.TbItemCatMapper;
 import com.binbini.imall.pojo.TbItemCat;
+import com.binbini.imall.pojo.TbPanelContent;
 import com.binbini.imall.service.ItemCatService;
 import com.binbini.imall.vo.DataTablesResult;
 import com.binbini.imall.vo.ItemCatChildrenVo;
@@ -34,8 +35,12 @@ public class ItemCatServiceImpl implements ItemCatService {
         queryWrapper.like("parent_id", itemCatDto.getParent_id());
         queryWrapper.orderByAsc("sort_order");
         List<TbItemCat> inDBList = tbItemCatMapper.selectList(queryWrapper);
-        TbItemCat last = inDBList.get(inDBList.size() - 1);
-        itemCatDto.setSort_order(last.getSort_order() + 1);
+        if (inDBList == null || inDBList.size() == 0) {
+            itemCatDto.setSort_order(1);
+        } else {
+            TbItemCat last = inDBList.get(inDBList.size() - 1);
+            itemCatDto.setSort_order(last.getSort_order() + 1);
+        }
         if (itemCatDto.getParent_id().equals("") || itemCatDto.getName().equals("") || itemCatDto.getSort_order().equals("") || itemCatDto.getIs_parent().equals("")) {
             return 0;
         }
@@ -103,12 +108,13 @@ public class ItemCatServiceImpl implements ItemCatService {
             itemCatVo.setValue(tbItemCat.getId())
                     .setLabel(tbItemCat.getName());
             QueryWrapper<TbItemCat> queryWrapper2 = new QueryWrapper<>();
-            queryWrapper2.like("parent_id", tbItemCat.getId()).like("is_parent", 1);
+            queryWrapper2.like("parent_id", tbItemCat.getId()).orderByAsc("sort_order");
             List<TbItemCat> tbItemCatList2 = tbItemCatMapper.selectList(queryWrapper2);
             for (TbItemCat tbItemCat2:tbItemCatList2) {
                 ItemCatChildrenVo itemCatChildrenVo = new ItemCatChildrenVo();
                 itemCatChildrenVo.setValue(tbItemCat2.getId())
-                        .setLabel(tbItemCat2.getName());
+                        .setLabel(tbItemCat2.getName())
+                        .setIcon(tbItemCat2.getIcon());
                 itemCatChildrenVos.add(itemCatChildrenVo);
             }
             itemCatVo.setChildren(itemCatChildrenVos);

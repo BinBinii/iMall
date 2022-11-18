@@ -37,6 +37,8 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private TbCommentMapper tbCommentMapper;
     @Autowired
+    private TbLikeContentMapper tbLikeContentMapper;
+    @Autowired
     private TbItemMapper tbItemMapper;
     @Autowired
     private RabbitTemplate rabbitTemplate;
@@ -73,6 +75,33 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public int createCommentMessage(Integer parentId, Integer userId, String content) {
+        if (parentId.equals("") || userId.equals("") || content.equals("")) {
+            return 0;
+        }
+        TbComment tbComment = tbCommentMapper.selectById(parentId);
+        TbComment newMessage = new TbComment();
+        newMessage.setId(IdGen.randomInteger())
+                .setUser_id(userId)
+                .setProduct_id(tbComment.getProduct_id())
+                .setContent(content)
+                .setIs_parent(0)
+                .setParent_id(parentId)
+                .setCreated(new Date());
+        if (tbCommentMapper.insert(newMessage) != 1) {
+            return -1;
+        }
+        TbLikeContent tbLikeContent = tbLikeContentMapper.selectOne(new QueryWrapper<TbLikeContent>().eq("comment_id", tbComment.getId()));
+        tbLikeContent.setComment_number(tbLikeContent.getComment_number() + 1);
+        tbLikeContentMapper.updateById(tbLikeContent);
+        MessageVo<Integer> messageVo = new MessageVo<>();
+        messageVo.setTitle("add_comment");
+        messageVo.setData(newMessage.getId());
+        rabbitTemplate.convertAndSend(RabbitmqConfig.EXCHANGE_TOPICS_INFORM, "inform.comment", messageVo);
+        return 1;
+    }
+
+    @Override
     public DataTablesResult findCommentSearchPage(int start, int length, Integer productId, String orderByCol, String orderBySort) {
         DataTablesResult result = new DataTablesResult();
 
@@ -90,7 +119,6 @@ public class CommentServiceImpl implements CommentService {
         TbItem tbItem = tbItemMapper.selectById(productId);
         String[] versions = tbItem.getVersion().split(",");
         String[] colors = tbItem.getColor().split(",");
-
         List<CommentVo> commentVos = new ArrayList<>();
         for (TbComment tbComment:tbComments) {
             CommentVo commentVo = new CommentVo();
@@ -106,10 +134,9 @@ public class CommentServiceImpl implements CommentService {
                     .setCreated(tbComment.getCreated());
             commentVos.add(commentVo);
         }
-
         PageInfo<CommentVo> pageInfo = new PageInfo<>(commentVos);
         result.setRecordsFiltered((int)pageInfo.getTotal());
-        result.setRecordsFiltered((int)pageInfo.getTotal());
+        result.setRecordsTotal(0);
 
         result.setSuccess(true);
         result.setData(commentVos);
@@ -126,18 +153,30 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<TbComment> findCommentByParentId(Integer parent_id) {
+    public DataTablesResult findCommentByParentId(Integer start, Integer length, Integer parent_id) {
+        DataTablesResult result = new DataTablesResult();
+
+        PageHelper.startPage(start, length);
         if (parent_id.equals("")) {
             return null;
         }
         QueryWrapper<TbComment> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("parent_id", parent_id);
+        queryWrapper.orderByDesc("created");
         List<TbComment> list = tbCommentMapper.selectList(queryWrapper);
-        return list;
+
+        PageInfo<TbComment> pageInfo = new PageInfo<>(list);
+        result.setRecordsFiltered((int)pageInfo.getTotal());
+        result.setRecordsTotal(0);
+
+        result.setSuccess(true);
+        result.setData(list);
+        return result;
     }
 
     @Override
     public boolean del(Integer id) {
         return tbCommentMapper.deleteById(id) == 1;
     }
+
 }

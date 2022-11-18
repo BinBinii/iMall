@@ -25,13 +25,11 @@ public class RabbitmqConfig {
         return ExchangeBuilder.topicExchange(EXCHANGE_TOPICS_INFORM).durable(true).build();
     }
 
-    // 声明QUEUE_INFORM_ITEM队列
     @Bean(QUEUE_INFORM_ITEM)
     public Queue QUEUE_INFORM_ITEM(){
         return new Queue(QUEUE_INFORM_ITEM);
     }
 
-    //ROUTINGKEY_ITEM队列绑定交换机，指定routingKey
     @Bean
     public Binding BINGING_ROUTINGKEY_ITEM(@Qualifier(QUEUE_INFORM_ITEM) Queue queue,
                                            @Qualifier(EXCHANGE_TOPICS_INFORM) Exchange exchange){

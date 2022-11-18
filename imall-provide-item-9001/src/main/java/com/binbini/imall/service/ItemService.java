@@ -32,6 +32,17 @@ public interface ItemService {
     DataTablesResult findItemSearchPage(int start, int length, String search, String minDate, String maxDate);
 
     /**
+     * 根据Cid多条件分页查询商品
+     * @param start
+     * @param length
+     * @param cid
+     * @param orderCol
+     * @param orderSort
+     * @return
+     */
+    DataTablesResult findItemSearchPageFromCid(int start, int length, int cid, String orderCol, String orderSort);
+
+    /**
      * 根据ID查找商品
      * @param id
      * @return

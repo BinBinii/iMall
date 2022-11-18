@@ -21,4 +21,6 @@ public class LikeCountVo implements Serializable {
 
     private Integer value;
 
+    private Integer messageValue;
+
 }

@@ -32,6 +32,15 @@ public class ItemConsumerController {
         return itemClientService.findItemSearchPage(start, length, search, minDate, maxDate);
     }
 
+    @GetMapping("/s/get/page/cid")
+    public DataTablesResult findItemSearchPageFromCid(@RequestParam("start") int start,
+                                                      @RequestParam("length") int length,
+                                                      @RequestParam("cid") int cid,
+                                                      @RequestParam("orderCol") String orderCol,
+                                                      @RequestParam("orderSort") String orderSort) {
+        return itemClientService.findItemSearchPageFromCid(start, length, cid, orderCol, orderSort);
+    }
+
     @GetMapping("/s/get")
     public TbItem findItemById(@RequestParam("id") Integer id) {
         return itemClientService.findItemById(id);

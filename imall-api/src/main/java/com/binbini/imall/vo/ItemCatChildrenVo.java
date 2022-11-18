@@ -16,4 +16,6 @@ public class ItemCatChildrenVo {
     private Integer value;
 
     private String label;
+
+    private String icon;
 }

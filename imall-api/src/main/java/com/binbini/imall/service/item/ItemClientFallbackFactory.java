@@ -25,6 +25,11 @@ public class ItemClientFallbackFactory implements FallbackFactory {
             }
 
             @Override
+            public DataTablesResult findItemSearchPageFromCid(int start, int length, int cid, String orderCol, String orderSort) {
+                return null;
+            }
+
+            @Override
             public TbItem findItemById(Integer id) {
                 return new TbItem()
                         .setId(id)

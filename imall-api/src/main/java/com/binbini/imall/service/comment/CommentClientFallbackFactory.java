@@ -22,6 +22,11 @@ public class CommentClientFallbackFactory implements FallbackFactory {
             }
 
             @Override
+            public int createCommentMessage(Integer parentId, Integer userId, String content) {
+                return 0;
+            }
+
+            @Override
             public DataTablesResult findCommentSearchPage(int start, int length, Integer productId, String orderByCol, String orderBySort) {
                 return null;
             }
@@ -34,7 +39,7 @@ public class CommentClientFallbackFactory implements FallbackFactory {
             }
 
             @Override
-            public List<TbComment> findCommentByParentId(Integer parent_id) {
+            public DataTablesResult findCommentByParentId(Integer start, Integer length, Integer parent_id) {
                 return null;
             }
 

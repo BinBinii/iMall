@@ -24,6 +24,11 @@ public interface CommentClientService {
     @PostMapping("/comment/create")
     public int createComment(@RequestBody CommentDto commentDto);
 
+    @PostMapping("/comment/create/message")
+    public int createCommentMessage(@RequestParam("parentId")Integer parentId,
+                                    @RequestParam("userId")Integer userId,
+                                    @RequestParam("content")String content);
+
     @GetMapping("/comment/get/page")
     public DataTablesResult findCommentSearchPage(@RequestParam("start") int start,
                                                   @RequestParam("length") int length,
@@ -35,7 +40,9 @@ public interface CommentClientService {
     public TbComment findCommentById(@RequestParam("id") Integer id);
 
     @GetMapping("/comment/get/list")
-    public List<TbComment> findCommentByParentId(@RequestParam("parent_id") Integer parent_id);
+    public DataTablesResult findCommentByParentId(@RequestParam("start") Integer start,
+                                                 @RequestParam("length") Integer length,
+                                                 @RequestParam("parent_id") Integer parent_id);
 
     @PostMapping("/comment/del")
     public boolean del(@RequestParam("id") Integer id);

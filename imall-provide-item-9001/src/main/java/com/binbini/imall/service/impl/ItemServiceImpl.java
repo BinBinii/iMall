@@ -5,10 +5,12 @@ import com.binbini.imall.config.RabbitmqConfig;
 import com.binbini.imall.dto.ItemDto;
 import com.binbini.imall.exception.IMallException;
 import com.binbini.imall.mapper.TbItemCatMapper;
+import com.binbini.imall.mapper.TbItemCollectionMapper;
 import com.binbini.imall.mapper.TbItemDescMapper;
 import com.binbini.imall.mapper.TbItemMapper;
 import com.binbini.imall.pojo.TbItem;
 import com.binbini.imall.pojo.TbItemCat;
+import com.binbini.imall.pojo.TbItemCollection;
 import com.binbini.imall.service.ItemService;
 import com.binbini.imall.utils.IdGen;
 import com.binbini.imall.vo.DataTablesResult;
@@ -34,6 +36,8 @@ public class ItemServiceImpl implements ItemService {
     private TbItemMapper tbItemMapper;
     @Autowired
     private TbItemDescMapper tbItemDescMapper;
+    @Autowired
+    private TbItemCollectionMapper tbItemCollectionMapper;
     @Autowired
     private TbItemCatMapper tbItemCatMapper;
     @Autowired
@@ -68,6 +72,12 @@ public class ItemServiceImpl implements ItemService {
         MessageVo<Integer> messageVo = new MessageVo<>();
         messageVo.setTitle("add_item");
         messageVo.setData(tbItem.getId());
+        TbItemCollection tbItemCollection = new TbItemCollection();
+        tbItemCollection.setProduct_id(tbItem.getId())
+                        .setCollection_count(0)
+                        .setCreated(new Date())
+                        .setUpdated(new Date());
+        tbItemCollectionMapper.insert(tbItemCollection);
         rabbitTemplate.convertAndSend(RabbitmqConfig.EXCHANGE_TOPICS_INFORM, "inform.item", messageVo);
         return 1;
     }
@@ -85,6 +95,29 @@ public class ItemServiceImpl implements ItemService {
             queryWrapper.between("created", minDate, maxDate);
         }
         queryWrapper.orderByDesc("id");
+        List<TbItem> list = tbItemMapper.selectList(queryWrapper);
+
+        PageInfo<TbItem> pageInfo = new PageInfo<>(list);
+        result.setRecordsFiltered((int)pageInfo.getTotal());
+        result.setRecordsTotal(getAllItemCount().getRecordsTotal());
+
+        result.setSuccess(true);
+        result.setData(list);
+        return result;
+    }
+
+    @Override
+    public DataTablesResult findItemSearchPageFromCid(int start, int length, int cid, String orderCol, String orderSort) {
+        DataTablesResult result = new DataTablesResult();
+
+        PageHelper.startPage(start, length);
+        QueryWrapper<TbItem> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("cid", cid);
+        if ("desc".equals(orderSort)) {
+            queryWrapper.orderByDesc(orderCol);
+        } else if ("asc".equals(orderSort)) {
+            queryWrapper.orderByAsc(orderCol);
+        }
         List<TbItem> list = tbItemMapper.selectList(queryWrapper);
 
         PageInfo<TbItem> pageInfo = new PageInfo<>(list);

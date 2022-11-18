@@ -34,6 +34,15 @@ public class ItemController {
         return itemService.findItemSearchPage(start, length, search, minDate, maxDate);
     }
 
+    @GetMapping("get/page/cid")
+    public DataTablesResult findItemSearchPageFromCid(@RequestParam("start") int start,
+                                                      @RequestParam("length") int length,
+                                                      @RequestParam("cid") int cid,
+                                                      @RequestParam("orderCol") String orderCol,
+                                                      @RequestParam("orderSort") String orderSort) {
+        return itemService.findItemSearchPageFromCid(start, length, cid, orderCol, orderSort);
+    }
+
     @GetMapping("get")
     @HystrixCommand(fallbackMethod = "hystrixGetTbItem")
     public TbItem findItemById(@RequestParam("id") Integer id) {

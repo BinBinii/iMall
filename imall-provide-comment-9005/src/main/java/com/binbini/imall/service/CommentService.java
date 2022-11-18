@@ -23,6 +23,15 @@ public interface CommentService {
     int createComment(CommentDto commentDto);
 
     /**
+     * 发表评论的留言
+     * @param parentId
+     * @param userId
+     * @param content
+     * @return
+     */
+    int createCommentMessage(Integer parentId, Integer userId, String content);
+
+    /**
      * 根据商品ID分页查询评论
      * @param start
      * @param length
@@ -45,7 +54,7 @@ public interface CommentService {
      * @param parent_id
      * @return
      */
-    List<TbComment> findCommentByParentId(Integer parent_id);
+    DataTablesResult findCommentByParentId(Integer start, Integer length, Integer parent_id);
 
     /**
      * 删除评论
