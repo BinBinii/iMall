@@ -33,4 +33,18 @@ public interface OrderService {
      */
     TbOrder findById(Integer id);
 
+    /**
+     * 确认收货
+     * @param orderId
+     * @return
+     */
+    Integer receipt(Integer orderId);
+
+    /**
+     * 评价
+     * @param orderId
+     * @return
+     */
+    Integer comment(Integer orderId);
+
 }

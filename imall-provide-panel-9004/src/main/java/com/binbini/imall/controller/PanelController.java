@@ -31,6 +31,11 @@ public class PanelController {
         return panelService.findAllPanel();
     }
 
+    @GetMapping("get/list")
+    public List<TbPanel> getTbPanelList() {
+        return panelService.getTbPanelList();
+    }
+
     @GetMapping("get")
     @HystrixCommand(fallbackMethod = "hystrixGetTbPanel")
     public TbPanel findPanelById(@RequestParam("id") Integer id) {

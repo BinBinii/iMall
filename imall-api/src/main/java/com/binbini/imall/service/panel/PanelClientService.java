@@ -26,6 +26,9 @@ public interface PanelClientService {
     @GetMapping("/panel/get/page")
     public List<PanelVo> findAllPanel();
 
+    @GetMapping("/panel/get/list")
+    public List<TbPanel> getTbPanelList();
+
     @GetMapping("/panel/get")
     public TbPanel findPanelById(@RequestParam("id") Integer id);
 

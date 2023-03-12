@@ -42,10 +42,16 @@ public interface ItemCatService {
     List<TbItemCat> findItemCatByAllParent();
 
     /**
-     * Element UI 联级选择器 ItemCat
+     * 所有商品 ItemCat
      * @return
      */
     List<ItemCatVo> cascaderItemCat();
+
+    /**
+     * 下拉选择 ItemCat
+     * @return
+     */
+    List<ItemCatVo> choiceItemCat();
 
     /**
      * 根据ID查找商品分类

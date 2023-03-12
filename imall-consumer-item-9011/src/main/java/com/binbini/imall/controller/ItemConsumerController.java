@@ -35,7 +35,7 @@ public class ItemConsumerController {
     @GetMapping("/s/get/page/cid")
     public DataTablesResult findItemSearchPageFromCid(@RequestParam("start") int start,
                                                       @RequestParam("length") int length,
-                                                      @RequestParam("cid") int cid,
+                                                      @RequestParam("cid") String cid,
                                                       @RequestParam("orderCol") String orderCol,
                                                       @RequestParam("orderSort") String orderSort) {
         return itemClientService.findItemSearchPageFromCid(start, length, cid, orderCol, orderSort);

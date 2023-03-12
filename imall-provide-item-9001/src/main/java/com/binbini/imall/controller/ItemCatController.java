@@ -49,6 +49,11 @@ public class ItemCatController {
         return itemCatService.cascaderItemCat();
     }
 
+    @GetMapping("get/list/choice")
+    public List<ItemCatVo> choiceItemCat() {
+        return itemCatService.choiceItemCat();
+    }
+
     @GetMapping("get/one")
     @HystrixCommand(fallbackMethod = "hystrixGetTbItemCat")
     public TbItemCat findItemCatById(@RequestParam("id") Integer id) {

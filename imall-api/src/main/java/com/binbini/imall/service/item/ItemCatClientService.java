@@ -36,6 +36,9 @@ public interface ItemCatClientService {
     @GetMapping("/item/cat/get/list/cascader")
     public List<ItemCatVo> cascaderItemCat();
 
+    @GetMapping("/item/cat/get/list/choice")
+    public List<ItemCatVo> choiceItemCat();
+
     @GetMapping("/item/cat/get/one")
     public TbItemCat findItemCatById(@RequestParam("id") Integer id);
 

@@ -29,8 +29,8 @@ public class OrderController {
         return Render.ok(result);
     }
 
-    @PostMapping("pay/{payNumber}")
-    public Object pay(@PathVariable String payNumber) {
+    @PostMapping("pay")
+    public Object pay(@RequestParam("payNumber") String payNumber) {
         int result = orderService.pay(payNumber);
         if (result == 0) {
             return Render.fail("Parameter is empty.");
@@ -45,9 +45,18 @@ public class OrderController {
     }
 
     @GetMapping("get/{id}")
-    @HystrixCommand(fallbackMethod = "hystrixGetTbOrder")
-    public TbOrder findById(@PathVariable Integer id) {
+    public TbOrder findById(@PathVariable("id") Integer id) {
         return orderService.findById(id);
+    }
+
+    @PostMapping("receipt/{id}")
+    public Integer receipt(@PathVariable("id") Integer orderId) {
+        return orderService.receipt(orderId);
+    }
+
+    @PostMapping("comment/{id}")
+    public Integer comment(@PathVariable("id") Integer orderId) {
+       return orderService.comment(orderId);
     }
 
     public TbOrder hystrixGetTbOrder(@PathVariable("id") Integer id) {

@@ -7,10 +7,12 @@ import com.binbini.imall.vo.CartVo;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: BinBin
@@ -22,7 +24,8 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private RedisUtil redisUtil;
-
+    @Autowired
+    private RedisTemplate redisTemplate;
     @Value("${cart.pre}")
     private String CART_PRE;
 
@@ -71,7 +74,8 @@ public class CartServiceImpl implements CartService {
         CartVo cartVo = new CartVo();
         cartVo.setUser_id(userId)
                 .setProductList(cartProductList);
-        redisUtil.set(CART_PRE + ":" + userId + "", new Gson().toJson(cartVo));
+        redisTemplate.opsForValue().set(CART_PRE + ":" + userId + "", new Gson().toJson(cartVo), 30, TimeUnit.DAYS);
+//        redisUtil.set(CART_PRE + ":" + userId + "", new Gson().toJson(cartVo));
         return true;
     }
 

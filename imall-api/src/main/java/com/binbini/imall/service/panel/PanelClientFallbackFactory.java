@@ -26,6 +26,11 @@ public class PanelClientFallbackFactory implements FallbackFactory {
             }
 
             @Override
+            public List<TbPanel> getTbPanelList() {
+                return null;
+            }
+
+            @Override
             public TbPanel findPanelById(Integer id) {
                 return null;
             }

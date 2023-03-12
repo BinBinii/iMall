@@ -21,6 +21,7 @@
         <module>imall-consumer-search-9016</module>
         <module>imall-provide-comment-9005</module>
         <module>imall-consumer-comment-9015</module>
+        <module>test</module>
     </modules>
 
     <packaging>pom</packaging>

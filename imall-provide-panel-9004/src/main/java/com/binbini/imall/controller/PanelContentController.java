@@ -46,8 +46,8 @@ public class PanelContentController {
         return panelContentService.update(tbPanelContent);
     }
 
-    @GetMapping("update/sort")
-    public boolean updateSortOrder(List<TbPanelContent> list) {
+    @PostMapping("update/sort")
+    public boolean updateSortOrder(@RequestBody List<TbPanelContent> list) {
         return panelContentService.updateSortOrder(list);
     }
 

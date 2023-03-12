@@ -46,6 +46,11 @@ public class ItemCatConsumerController {
         return itemCatClientService.cascaderItemCat();
     }
 
+    @GetMapping("/s/cat/get/list/choice")
+    public List<ItemCatVo> choiceItemCat() {
+        return itemCatClientService.choiceItemCat();
+    }
+
     @GetMapping("/s/cat/get/one")
     public TbItemCat findItemCatById(@RequestParam("id") Integer id) {
         return itemCatClientService.findItemCatById(id);

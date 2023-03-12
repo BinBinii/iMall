@@ -524,4 +524,8 @@ public class RedisUtil {
     public void rightPop(String key, long timeout, TimeUnit unit) {
         redisTemplate.opsForList().rightPop(key, timeout, unit);
     }
+
+    public void deleteKey(String key) {
+        redisTemplate.delete(key);
+    }
 }

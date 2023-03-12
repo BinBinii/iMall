@@ -13,14 +13,30 @@ import java.util.List;
 @Service
 public class AddressServiceImpl implements AddressService {
     @Autowired
-    TbAddressMapper tbAddressMapper;
+    private TbAddressMapper tbAddressMapper;
     @Override
     public int createAddress(TbAddress tbAddress) {
-        return   tbAddressMapper.insert(tbAddress);
+        List<TbAddress> list = tbAddressMapper.selectList(new QueryWrapper<TbAddress>().eq("user_id", tbAddress.getUser_id()));
+        if (list.size() == 0) {
+            tbAddress.setIs_default(1);
+        } else {
+            tbAddress.setIs_default(0);
+        }
+        return tbAddressMapper.insert(tbAddress);
     }
 
     @Override
     public int updateAddress(TbAddress tbAddress) {
+        if (tbAddress.getIs_default().equals(1)) {
+            QueryWrapper<TbAddress> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("user_id", tbAddress.getUser_id()).eq("is_default", 1);
+            TbAddress defaultTbAddress = tbAddressMapper.selectOne(queryWrapper);
+            if (defaultTbAddress != null) {
+                defaultTbAddress.setIs_default(0);
+                tbAddressMapper.updateById(defaultTbAddress);
+            }
+
+        }
         return tbAddressMapper.updateById(tbAddress);
     }
 

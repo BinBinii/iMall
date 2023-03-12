@@ -27,6 +27,8 @@ public interface PanelService {
      */
     List<PanelVo> findAllPanel();
 
+    List<TbPanel> getTbPanelList();
+
     /**
      * 根据ID查找板块
      * @param id

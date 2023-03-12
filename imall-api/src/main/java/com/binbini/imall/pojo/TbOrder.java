@@ -54,4 +54,6 @@ public class TbOrder implements Serializable {
     private String buyer_nick;              // 买家昵称
 
     private Integer buyer_comment;          // 买家是否已经评价
+
+    private String address_info;            // 收货信息
 }

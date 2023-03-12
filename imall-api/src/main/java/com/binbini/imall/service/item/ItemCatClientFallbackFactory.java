@@ -38,6 +38,11 @@ public class ItemCatClientFallbackFactory implements FallbackFactory {
             }
 
             @Override
+            public List<ItemCatVo> choiceItemCat() {
+                return null;
+            }
+
+            @Override
             public TbItemCat findItemCatById(Integer id) {
                 return new TbItemCat()
                         .setId(id)

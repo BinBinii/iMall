@@ -29,6 +29,11 @@ public class PanelConsumerController {
         return panelClientService.findAllPanel();
     }
 
+    @GetMapping("/s/panel/get/list")
+    public List<TbPanel> getTbPanelList() {
+        return panelClientService.getTbPanelList();
+    }
+
     @GetMapping("/s/panel/get")
     public TbPanel findPanelById(@RequestParam("id") Integer id) {
         return panelClientService.findPanelById(id);

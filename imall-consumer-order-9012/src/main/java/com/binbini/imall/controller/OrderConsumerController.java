@@ -31,25 +31,13 @@ public class OrderConsumerController {
 
     @PostMapping("/s/create")
     public Object createOrder(@RequestBody OrderDto orderDto) {
-        String payNumber = IdGen.uuid();
-        orderDto.setOrder_number(payNumber);
-        PayOrderDto payOrderDto = new PayOrderDto();
-        List<OrderAppointmentForm> orderAppointmentFormList = new ArrayList<>();
-        OrderAppointmentForm orderAppointmentForm = new OrderAppointmentForm();
-        orderAppointmentForm.setMoney(orderDto.getPayment())
-                        .setCommodity_name("iMall产品")
-                        .setMerchant_name("iMall");
-        orderAppointmentFormList.add(orderAppointmentForm);
-        payOrderDto.setUser_info_id(orderDto.getUser_id())
-                .setPayNumber(payNumber)
-                .setOrderAppointmentForms(orderAppointmentFormList);
-        payClientService.order(payOrderDto);
         return orderClientService.createOrder(orderDto);
     }
 
-    @PostMapping("/s/pay/{payNumber}")
-    public Object pay(@PathVariable("payNumber") String payNumber) {
-        Object result = payClientService.pay(payNumber);
+    @PostMapping("/s/pay")
+    public Object pay(@RequestParam("payNumber") String payNumber,
+                      @RequestParam("payPassword") String payPassword) {
+        Object result = payClientService.pay(payNumber, payPassword);
         ObjectMapper objectMapper = new ObjectMapper();
         Render render = objectMapper.convertValue(result, Render.class);
         if (render.getError()) {
@@ -61,6 +49,16 @@ public class OrderConsumerController {
     @GetMapping("/s/get/{id}")
     public TbOrder findById(@PathVariable("id") Integer id) {
         return orderClientService.findById(id);
+    }
+
+    @PostMapping("/s/receipt/{id}")
+    public Integer receipt(@PathVariable("id") Integer orderId) {
+        return orderClientService.receipt(orderId);
+    }
+
+    @PostMapping("/s/comment/{id}")
+    public Integer comment(@PathVariable("id") Integer orderId) {
+        return orderClientService.comment(orderId);
     }
 
 }

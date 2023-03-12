@@ -107,12 +107,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public DataTablesResult findItemSearchPageFromCid(int start, int length, int cid, String orderCol, String orderSort) {
+    public DataTablesResult findItemSearchPageFromCid(int start, int length, String cid, String orderCol, String orderSort) {
+        String[] cids = cid.split(",");
         DataTablesResult result = new DataTablesResult();
 
         PageHelper.startPage(start, length);
         QueryWrapper<TbItem> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("cid", cid);
+        for (String item:cids) {
+            queryWrapper.eq("cid", Integer.parseInt(item)).or();
+        }
         if ("desc".equals(orderSort)) {
             queryWrapper.orderByDesc(orderCol);
         } else if ("asc".equals(orderSort)) {

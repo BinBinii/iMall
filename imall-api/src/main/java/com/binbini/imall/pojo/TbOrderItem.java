@@ -22,7 +22,13 @@ public class TbOrderItem implements Serializable {
 
     private Integer item_id;        // 商品ID
 
-    private Integer order_id;       // 订单ID
+    private String order_number;    // 订单号
+
+    private Integer version;        // 商品版本
+
+    private Integer color;          // 商品颜色
+
+    private String item_info;       // 商品版本、颜色信息
 
     private Integer num;            // 商品购买数量
 

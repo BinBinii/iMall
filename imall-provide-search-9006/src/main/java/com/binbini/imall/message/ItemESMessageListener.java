@@ -4,11 +4,8 @@ import com.binbini.imall.config.RabbitmqConfig;
 import com.binbini.imall.mapper.TbItemMapper;
 import com.binbini.imall.pojo.TbItem;
 import com.binbini.imall.vo.MessageVo;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
-import org.elasticsearch.action.delete.DeleteRequest;
-import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -44,7 +41,6 @@ public class ItemESMessageListener {
     @RabbitListener(queues = {RabbitmqConfig.QUEUE_INFORM_ITEM})
     public void item_message(Object msg, Message message, Channel channel) throws IOException {
         MessageVo<Integer> messageVo = new Gson().fromJson(new String(message.getBody()), MessageVo.class);
-//        MessageVo<Integer> messageVo = new ObjectMapper().convertValue(msg, MessageVo.class);
         String messageTitle = messageVo.getTitle();
         if ("add_item".equals(messageTitle)) {
             TbItem tbItem = tbItemMapper.selectById(messageVo.getData());

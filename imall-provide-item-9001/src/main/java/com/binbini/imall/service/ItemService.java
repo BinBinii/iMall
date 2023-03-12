@@ -40,7 +40,7 @@ public interface ItemService {
      * @param orderSort
      * @return
      */
-    DataTablesResult findItemSearchPageFromCid(int start, int length, int cid, String orderCol, String orderSort);
+    DataTablesResult findItemSearchPageFromCid(int start, int length, String cid, String orderCol, String orderSort);
 
     /**
      * 根据ID查找商品

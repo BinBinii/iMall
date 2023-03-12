@@ -29,6 +29,16 @@ public class OrderClientFallbackFactory implements FallbackFactory {
                         .setId(id)
                         .setOrder_number("id => " + id + " There is no corresponding information. The client provided degraded information. The service has been shut down.");
             }
+
+            @Override
+            public Integer receipt(Integer orderId) {
+                return null;
+            }
+
+            @Override
+            public Integer comment(Integer orderId) {
+                return null;
+            }
         };
     }
 }

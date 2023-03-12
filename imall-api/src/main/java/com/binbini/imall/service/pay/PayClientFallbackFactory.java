@@ -20,7 +20,7 @@ public class PayClientFallbackFactory implements FallbackFactory {
             }
 
             @Override
-            public Object pay(String payNumber) {
+            public Object pay(String payNumber, String payPassword) {
                 return false;
             }
         };

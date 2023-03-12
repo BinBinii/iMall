@@ -5,6 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @Author: BinBin
@@ -18,7 +19,8 @@ public interface PayClientService {
     @PostMapping("/pay/order")
     public Object order(PayOrderDto orderDto);
 
-    @PostMapping("/pay/anon/{payNumber}")
-    public Object pay(@PathVariable("payNumber") String payNumber);
+    @PostMapping("/pay/anon")
+    public Object pay(@RequestParam("payNumber") String payNumber,
+                      @RequestParam("payPassword") String payPassword);
 
 }

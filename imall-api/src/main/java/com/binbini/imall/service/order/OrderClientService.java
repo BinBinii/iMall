@@ -4,10 +4,7 @@ import com.binbini.imall.dto.OrderDto;
 import com.binbini.imall.pojo.TbOrder;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: BinBin
@@ -21,10 +18,16 @@ public interface OrderClientService {
     @PostMapping("/order/create")
     public Object createOrder(@RequestBody OrderDto orderDto);
 
-    @PostMapping("/order/pay/{payNumber}")
-    public Object pay(@PathVariable("payNumber") String payNumber);
+    @PostMapping("/order/pay")
+    public Object pay(@RequestParam("payNumber") String payNumber);
 
     @GetMapping("/order/get/{id}")
     public TbOrder findById(@PathVariable("id") Integer id);
+
+    @PostMapping("/order/receipt/{id}")
+    public Integer receipt(@PathVariable("id") Integer orderId);
+
+    @PostMapping("/order/comment/{id}")
+    public Integer comment(@PathVariable("id") Integer orderId);
 
 }

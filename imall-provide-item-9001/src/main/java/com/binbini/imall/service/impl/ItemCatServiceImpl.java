@@ -124,6 +124,33 @@ public class ItemCatServiceImpl implements ItemCatService {
     }
 
     @Override
+    public List<ItemCatVo> choiceItemCat() {
+        List<ItemCatVo> result = new ArrayList<>();
+        QueryWrapper<TbItemCat> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("parent_id", 0).notLike("id", -1);
+        List<TbItemCat> tbItemCatList = tbItemCatMapper.selectList(queryWrapper);
+        for (TbItemCat tbItemCat:tbItemCatList) {
+            ItemCatVo itemCatVo = new ItemCatVo();
+            List<ItemCatChildrenVo> itemCatChildrenVos = new ArrayList<>();
+            itemCatVo.setValue(tbItemCat.getId())
+                    .setLabel(tbItemCat.getName());
+            QueryWrapper<TbItemCat> queryWrapper2 = new QueryWrapper<>();
+            queryWrapper2.like("parent_id", tbItemCat.getId()).notLike("is_parent", 0).orderByAsc("sort_order");
+            List<TbItemCat> tbItemCatList2 = tbItemCatMapper.selectList(queryWrapper2);
+            for (TbItemCat tbItemCat2:tbItemCatList2) {
+                ItemCatChildrenVo itemCatChildrenVo = new ItemCatChildrenVo();
+                itemCatChildrenVo.setValue(tbItemCat2.getId())
+                        .setLabel(tbItemCat2.getName())
+                        .setIcon(tbItemCat2.getIcon());
+                itemCatChildrenVos.add(itemCatChildrenVo);
+            }
+            itemCatVo.setChildren(itemCatChildrenVos);
+            result.add(itemCatVo);
+        }
+        return result;
+    }
+
+    @Override
     public TbItemCat findItemCatById(Integer id) {
         TbItemCat tbItemCat = tbItemCatMapper.selectById(id);
         String originName = tbItemCat.getName();
@@ -171,7 +198,7 @@ public class ItemCatServiceImpl implements ItemCatService {
             TbItemCat tbItemCat = list.get(i);
             tbItemCat.setSort_order(i + 1);
             if (tbItemCatMapper.updateById(tbItemCat) != 1) {
-                // TODO 回滚
+                return false;
             }
         }
         return true;

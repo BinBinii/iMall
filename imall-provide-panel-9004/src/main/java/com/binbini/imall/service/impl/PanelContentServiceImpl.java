@@ -137,7 +137,7 @@ public class PanelContentServiceImpl implements PanelContentService {
             TbPanelContent tbPanelContent = list.get(i);
             tbPanelContent.setSort_order(i + 1);
             if (tbPanelContentMapper.updateById(tbPanelContent) != 1) {
-                // TODO  回滚
+                return false;
             }
         }
         return true;

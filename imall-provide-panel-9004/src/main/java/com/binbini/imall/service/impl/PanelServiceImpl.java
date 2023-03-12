@@ -70,6 +70,11 @@ public class PanelServiceImpl implements PanelService {
     }
 
     @Override
+    public List<TbPanel> getTbPanelList() {
+        return tbPanelMapper.selectList(new QueryWrapper<TbPanel>().orderByAsc("sort_order"));
+    }
+
+    @Override
     public TbPanel findPanelById(Integer id) {
         return tbPanelMapper.selectById(id);
     }
@@ -95,7 +100,7 @@ public class PanelServiceImpl implements PanelService {
             TbPanel tbPanel = list.get(i);
             tbPanel.setSort_order(i + 1);
             if (tbPanelMapper.updateById(tbPanel) != 1) {
-                // TODO  回滚
+                return false;
             }
         }
         return true;
